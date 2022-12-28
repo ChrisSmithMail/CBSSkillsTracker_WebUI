@@ -1,0 +1,55 @@
+﻿@page
+@model CBSSkillsTracker_WebUI.Pages.ScoreSubmissionFormModel
+@{
+    ViewData["Title"] = "Score Submission Form";
+}
+
+<h1>Score Submission Form</h1>
+
+
+<form method="post">
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">
+                    Capability ID
+                </th>
+                <th scope="col">
+                    Capability Name
+                </th>
+                <th scope="col">
+                    Score
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int index = 0; index < Model.CapabilitiesList.Count; index++)
+            {
+                <tr>
+
+                    <td width="10%">
+                        @Html.HiddenFor(m => m.CapabilitiesList[index].Id)
+                        @Html.DisplayFor(m => m.CapabilitiesList[index].Id)
+                    </td>
+                    <td width="80%">
+
+                        @Html.HiddenFor(m => m.CapabilitiesList[index].CapabilityName)
+                        @Html.DisplayFor(m => m.CapabilitiesList[index].CapabilityName)
+                    </td>
+                    <td width="10%">
+                        <input type="number" asp-for="Scores[index].Score" min="0" max="5" step="1" name="txtScore" />
+                    </td>
+
+
+                </tr>
+            }
+
+
+        </tbody>
+    </table>
+
+    <button type="submit">submit</button>
+
+</form>
