@@ -20,10 +20,10 @@ namespace CBSSkillsTracker_WebUI.Pages
 
         [BindProperty(SupportsGet = true)]
         public List<CapabilitiesModel> CapabilitiesList { get; set; }
-
-
-        [BindProperty(SupportsGet = true)]
-        public List<ScoreModel> Scores { get; set; } 
+        
+      
+        [BindProperty] 
+        public List<ScoreModel> Scores { get; set; }
 
         public async Task<IActionResult> OnGet()
         {
@@ -46,39 +46,24 @@ namespace CBSSkillsTracker_WebUI.Pages
                     var UserResponse = Res.Content.ReadAsStringAsync().Result;
                     //Deserializing the response recieved from web api and storing into the Employee list
                     CapabilitiesList = JsonConvert.DeserializeObject<List<CapabilitiesModel>>(UserResponse);
-                    
-                    /*
-                        if (Scores is null)
-                    {
-                        Scores = new List<ScoreModel>();
-                    }
-
-                    */
-                    
-                    foreach (var item in CapabilitiesList)
-                    {
-                       
-                        Scores.Add(new ScoreModel());
-                    }
                 }
               
             }
             return Page();
-            
         }
 
 
-        public async Task<IActionResult> OnPost(List<ScoreModel> Scores)
+        public IActionResult OnPost(List<ScoreModel> Scores) 
         {
 
             using (var client = new HttpClient())
             {
 
 
-               // if (!ModelState.IsValid)
-               // {
-               //     return Page();
-               // }
+                if (!ModelState.IsValid)
+                {
+                    return Page();
+                }
 
                 List<ScoreModel> scores = Scores.Select(s => new ScoreModel
                         {
@@ -99,7 +84,7 @@ namespace CBSSkillsTracker_WebUI.Pages
                 var result = postTask.Result;
                 if (result.IsSuccessStatusCode)
                 {
-                    //return Page();
+                    return Page();
                 }
                 else
                 { //ModelState.AddModelError(string.Empty, "An Error Occured in 'public ActionResult NewCapability'- Please contact Dev Support ");
@@ -108,8 +93,8 @@ namespace CBSSkillsTracker_WebUI.Pages
 
 
 
-            // return RedirectToPage ("/Index");
-            return Page() ;
+            return RedirectToPage ("/Index");
+
 
         }
 
